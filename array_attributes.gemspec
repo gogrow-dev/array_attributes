@@ -19,5 +19,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir['test/**/*']
   s.require_paths = ['lib']
 
+  s.add_runtime_dependency 'activerecord', '>= 5.2', '< 7.1'
+
   s.add_development_dependency 'rubocop', '~> 0'
 end

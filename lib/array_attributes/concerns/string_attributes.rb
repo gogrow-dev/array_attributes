@@ -3,11 +3,10 @@
 module ArrayAttributes
   module Concerns
     module StringAttributes
-      def string_array_attributes(attrs)
+      def string_array_attributes(attrs, opts)
         attrs.each do |attribute|
           get_raw_value(attribute)
-          assign_raw_value(attribute)
-          compact_value(attribute)
+          assign_raw_value(attribute, opts)
         end
       end
 
@@ -19,15 +18,18 @@ module ArrayAttributes
         end
       end
 
-      def assign_raw_value(attribute)
+      def assign_raw_value(attribute, opts)
         define_method :"#{attribute}_raw=" do |values|
-          assign_attributes("#{attribute}": values&.split(',')&.map(&:strip))
-        end
-      end
+          return unless values.present?
 
-      def compact_value(attribute)
-        define_method :"compact_#{attribute}" do
-          assign_attributes("#{attribute}": send(attribute)&.reject(&:blank?))
+          new_values = values.split(',').map(&:strip)
+
+          new_values.reject!(&:blank?) if opts[:reject_blank] == true
+
+          reject_if = opts[:reject_if]
+          new_values.reject! { |v| reject_if.call(v) } if reject_if.is_a?(Proc)
+
+          assign_attributes("#{attribute}": new_values)
         end
       end
     end

@@ -13,10 +13,12 @@ This gem can be used to avoid repeating the same methods in models when working 
 
 #### Install gem:
 
+Add this line to your Gemfile:
 ```ruby
 gem 'array_attributes'
 ```
 
+then run:
 ```shell
 bundle install
 ```
@@ -30,6 +32,17 @@ end
 ```
 
 It assumes you are passing string attributes.
+
+It also supports the following options:
+
+  * `:reject_blank`: whether the attribute should skip blank values
+  * `:reject_if`: condition to reject values
+
+```ruby
+class Device < ActiveRecord::Base
+  string_array_attributes [:ips], reject_blank: true, reject_if: ->(value) { value == '127.0.0.1' }
+end
+```
 
 ### attribute_raw
 
