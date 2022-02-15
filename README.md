@@ -64,15 +64,4 @@ book.save!
 book.authors #=> ["John Doe", "Jane Doe"]
 ```
 
-### compact_attribute
-
-You can invoke `compact_attribute` to remove blank items from the array attribute.
-
-```ruby
-book = Book.new(authors: ['John Doe', 'Jane Doe', ''])
-book.compact_authors
-book.save!
-book.authors #=> ["John Doe", "Jane Doe"]
-```
-
 See `LICENSE`.
